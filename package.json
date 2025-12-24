@@ -1,0 +1,49 @@
+{
+  "name": "n8n-nodes-bcdrllc",
+  "version": "1.0.0",
+  "description": "BCDR Company - Cloud API integration for n8n. Send messages, media, templates, and manage business communications",
+  "keywords": [
+    "n8n-community-node-package",
+    "bcdr-company",
+    "bcdrllc",
+    "messaging",
+    "business-communications",
+    "whatsapp-cloud-api",
+    "saudi-arabia"
+  ],
+  "license": "MIT",
+  "homepage": "https://bcdr.sa",
+  "author": {
+    "name": "BCDR Company",
+    "email": "sales@bcdr.sa"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BCDRLLC/n8n-nodes-bcdrllc.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/BcdrllcApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Bcdrllc/Bcdrllc.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "n8n-workflow": "*",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "form-data": "^4.0.0"
+  }
+}
