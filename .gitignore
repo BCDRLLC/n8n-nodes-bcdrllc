@@ -1,6 +1,43 @@
-.DS_Store
+# Dependencies
 node_modules/
+package-lock.json
+
+# Build output
 dist/
-*.log
+
+# Environment and secrets
 .env
+.env.*
+*.log
+
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Internal documentation (keep private)
+ANALYSIS_*.md
+ARCHITECTURE.md
+COMPLETE_*.md
+DEVELOPMENT_GUIDE.md
+EXCHANGE_DATA_GUIDE.md
+INSTALLATION_*.md
+MISSING_FEATURES.md
+PROJECT_ANALYSIS.md
+QUICK_REFERENCE.md
+SEND_FLOW_GUIDE.md
+MARKET_RESEARCH.md
+WEBHOOKS.md
+
+# Reference code (keep private)
+m/
+pywa-master/
+reference/
+examples/
+
+# Temporary files
+tmp/
+*.tmp
+.cache/

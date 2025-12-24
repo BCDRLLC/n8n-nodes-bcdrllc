@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-bcdrllc",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "BCDR Company - Cloud API integration for n8n. Send messages, media, templates, and manage business communications",
   "keywords": [
     "n8n-community-node-package",
@@ -8,7 +8,7 @@
     "bcdrllc",
     "messaging",
     "business-communications",
-    "whatsapp-cloud-api",
+    "cloud-api",
     "saudi-arabia"
   ],
   "license": "MIT",
@@ -21,10 +21,12 @@
     "type": "git",
     "url": "https://github.com/BCDRLLC/n8n-nodes-bcdrllc.git"
   },
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "tsc && npm run copy-icons",
+    "copy-icons": "cp nodes/**/*.svg dist/nodes/ 2>/dev/null || cp nodes/Bcdrllc/*.svg dist/nodes/Bcdrllc/ && cp nodes/BcdrllcTrigger/*.svg dist/nodes/BcdrllcTrigger/ && cp nodes/BcdrllcFlowTrigger/*.svg dist/nodes/BcdrllcFlowTrigger/",
+    "dev": "tsc --watch",
+    "lint": "tsc --noEmit"
   },
   "files": [
     "dist"
@@ -35,15 +37,14 @@
       "dist/credentials/BcdrllcApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Bcdrllc/Bcdrllc.node.js"
+      "dist/nodes/Bcdrllc/Bcdrllc.node.js",
+      "dist/nodes/BcdrllcTrigger/BcdrllcTrigger.node.js",
+      "dist/nodes/BcdrllcFlowTrigger/BcdrllcFlowTrigger.node.js"
     ]
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "n8n-workflow": "*",
     "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "form-data": "^4.0.0"
   }
 }
