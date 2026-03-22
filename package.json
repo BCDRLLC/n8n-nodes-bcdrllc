@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-bcdrllc",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "BCDR Company - Cloud API integration for n8n. Send messages, media, templates, and manage business communications",
   "keywords": [
     "n8n-community-node-package",
@@ -44,7 +44,9 @@
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
-    "n8n-workflow": "*",
     "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
   }
 }

@@ -54,6 +54,23 @@ export class BcdrllcApi implements ICredentialType {
 			description: 'App Secret for webhook signature validation (required for webhook triggers)',
 		},
 		{
+			displayName: 'App ID',
+			name: 'appId',
+			type: 'string',
+			default: '',
+			description: 'Facebook App ID (required for system operations such as getAppAccessToken and setAppCallbackUrl)',
+		},
+		{
+			displayName: 'App Access Token',
+			name: 'appAccessToken',
+			type: 'string',
+			typeOptions: {
+				password: true,
+			},
+			default: '',
+			description: 'App Access Token for system management operations (e.g. setAppCallbackUrl)',
+		},
+		{
 			displayName: 'Business Private Key',
 			name: 'businessPrivateKey',
 			type: 'string',

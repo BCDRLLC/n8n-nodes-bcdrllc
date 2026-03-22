@@ -6,6 +6,7 @@ import {
 	INodeTypeDescription,
 	ICredentialDataDecryptedObject,
 	IDataObject,
+	NodeOperationError,
 } from 'n8n-workflow';
 
 import * as crypto from 'crypto';
@@ -14,7 +15,7 @@ export class BcdrllcTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'BCDR Webhook Trigger',
 		name: 'bcdrllcTrigger',
-		icon: 'file:bcdrllc.svg',
+		icon: 'file:bcdrllcTrigger.svg',
 		group: ['trigger'],
 		version: 1,
 		description: 'Receive WhatsApp webhook updates (messages, statuses, etc.)',
@@ -112,7 +113,7 @@ export class BcdrllcTrigger implements INodeType {
 			const appSecret = credentials.appSecret as string;
 			
 			if (!appSecret) {
-				throw new Error('App Secret is required when signature validation is enabled');
+				throw new NodeOperationError(this.getNode(), 'App Secret is required when signature validation is enabled');
 			}
 
 			if (!signature) {

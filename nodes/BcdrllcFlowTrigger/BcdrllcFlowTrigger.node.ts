@@ -15,7 +15,7 @@ export class BcdrllcFlowTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'BCDR Flow Trigger',
 		name: 'bcdrllcFlowTrigger',
-		icon: 'file:bcdrllc.svg',
+		icon: 'file:bcdrllcFlowTrigger.svg',
 		group: ['trigger'],
 		version: 1,
 		description: 'Handle WhatsApp Flow data exchange requests with encryption',

@@ -2882,51 +2882,7 @@ export class Bcdrllc implements INodeType {
 			// ========================================
 			// SYSTEM FIELDS
 			// ========================================
-			{
-				displayName: 'App ID',
-				name: 'systemAppId',
-				type: 'string',
-				displayOptions: {
-					show: {
-						resource: ['system'],
-						operation: ['getAppAccessToken'],
-					},
-				},
-				default: '',
-				required: true,
-				description: 'Facebook App ID',
-			},
-			{
-				displayName: 'App Secret',
-				name: 'appSecret',
-				type: 'string',
-				typeOptions: {
-					password: true,
-				},
-				displayOptions: {
-					show: {
-						resource: ['system'],
-						operation: ['getAppAccessToken'],
-					},
-				},
-				default: '',
-				required: true,
-				description: 'Facebook App Secret',
-			},
-			{
-				displayName: 'App Access Token',
-				name: 'appAccessToken',
-				type: 'string',
-				displayOptions: {
-					show: {
-						resource: ['system'],
-						operation: ['setAppCallbackUrl'],
-					},
-				},
-				default: '',
-				required: true,
-				description: 'App access token from getAppAccessToken',
-			},
+			// Note: App ID, App Secret, and App Access Token are read from the credential store.
 			{
 				displayName: 'Callback URL',
 				name: 'systemCallbackUrl',
@@ -4759,13 +4715,13 @@ export class Bcdrllc implements INodeType {
 				// ========================================
 				else if (resource === 'system') {
 					if (operation === 'getAppAccessToken') {
-						const appId = this.getNodeParameter('systemAppId', i) as string;
-						const appSecret = this.getNodeParameter('appSecret', i) as string;
+						const appId = credentials.appId as string;
+						const appSecret = credentials.appSecret as string;
 
-						responseData = await this.helpers.httpRequest({
-							method: 'GET',
-							url: `https://graph.facebook.com/v24.0/oauth/access_token`,
-							qs: {
+						responseData = await this.helpers.httpRequestWithAuthentication.call(this, 'bcdrllcApi', {
+							method: 'POST',
+							url: `https://graph.facebook.com/${apiVersion}/oauth/access_token`,
+							body: {
 								grant_type: 'client_credentials',
 								client_id: appId,
 								client_secret: appSecret,
@@ -4773,16 +4729,16 @@ export class Bcdrllc implements INodeType {
 							json: true,
 						});
 					} else if (operation === 'setAppCallbackUrl') {
-						const appId = this.getNodeParameter('systemAppId', i) as string;
-						const appAccessToken = this.getNodeParameter('appAccessToken', i) as string;
+						const appId = credentials.appId as string;
+						const appAccessToken = credentials.appAccessToken as string;
 						const callbackUrl = this.getNodeParameter('systemCallbackUrl', i) as string;
 						const verifyToken = this.getNodeParameter('systemVerifyToken', i) as string;
 						const fields = this.getNodeParameter('subscriptionFields', i) as string;
 
-						responseData = await this.helpers.httpRequest({
+						responseData = await this.helpers.httpRequestWithAuthentication.call(this, 'bcdrllcApi', {
 							method: 'POST',
-							url: `https://graph.facebook.com/v24.0/${appId}/subscriptions`,
-							qs: {
+							url: `https://graph.facebook.com/${apiVersion}/${appId}/subscriptions`,
+							body: {
 								object: 'whatsapp_business_account',
 								callback_url: callbackUrl,
 								verify_token: verifyToken,
