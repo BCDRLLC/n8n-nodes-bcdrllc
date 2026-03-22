@@ -14,8 +14,10 @@
     "moduleResolution": "node"
   },
   "include": [
+    "index.ts",
     "credentials/**/*",
-    "nodes/**/*"
+    "nodes/**/*",
+    "utils/**/*"
   ],
   "exclude": [
     "node_modules",

@@ -19,14 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BCDRLLC/n8n-nodes-bcdrllc.git"
+    "url": "git+https://github.com/BCDRLLC/n8n-nodes-bcdrllc.git"
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc && npm run copy-icons",
-    "copy-icons": "cp nodes/**/*.svg dist/nodes/ 2>/dev/null || cp nodes/Bcdrllc/*.svg dist/nodes/Bcdrllc/ && cp nodes/BcdrllcTrigger/*.svg dist/nodes/BcdrllcTrigger/ && cp nodes/BcdrllcFlowTrigger/*.svg dist/nodes/BcdrllcFlowTrigger/",
+	    "build": "tsc && node scripts/copy-icons.js",
     "dev": "tsc --watch",
-    "lint": "tsc --noEmit"
+	    "lint": "tsc --noEmit",
+	    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"
