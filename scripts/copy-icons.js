@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const iconMappings = [
+	['credentials/bcdrllcApi.svg', 'dist/credentials/bcdrllcApi.svg'],
 	['nodes/Bcdrllc/bcdrllc.svg', 'dist/nodes/Bcdrllc/bcdrllc.svg'],
 	['nodes/BcdrllcTrigger/bcdrllcTrigger.svg', 'dist/nodes/BcdrllcTrigger/bcdrllcTrigger.svg'],
 	['nodes/BcdrllcFlowTrigger/bcdrllcFlowTrigger.svg', 'dist/nodes/BcdrllcFlowTrigger/bcdrllcFlowTrigger.svg'],

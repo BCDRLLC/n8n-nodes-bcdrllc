@@ -1,8 +1,10 @@
 import {
 	IExecuteFunctions,
+	JsonObject,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
+	NodeApiError,
 	NodeOperationError,
 } from 'n8n-workflow';
 
@@ -37,29 +39,14 @@ export class Bcdrllc implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
-						name: 'Message',
-						value: 'message',
-						description: 'Send text, interactive, location, and contact messages',
-					},
-					{
-						name: 'Media',
-						value: 'media',
-						description: 'Send and manage media files',
-					},
-					{
-						name: 'Template',
-						value: 'template',
-						description: 'Send and manage message templates',
-					},
-					{
 						name: 'Business Profile',
 						value: 'businessProfile',
 						description: 'Manage business profile settings',
 					},
 					{
-						name: 'Phone Number',
-						value: 'phoneNumber',
-						description: 'Manage phone number settings',
+						name: 'Call',
+						value: 'call',
+						description: 'Manage call operations',
 					},
 					{
 						name: 'Flow',
@@ -67,19 +54,39 @@ export class Bcdrllc implements INodeType {
 						description: 'Manage interactive flows',
 					},
 					{
+						name: 'Media',
+						value: 'media',
+						description: 'Send and manage media files',
+					},
+					{
+						name: 'Message',
+						value: 'message',
+						description: 'Send text, interactive, location, and contact messages',
+					},
+					{
+						name: 'Phone Number',
+						value: 'phoneNumber',
+						description: 'Manage phone number settings',
+					},
+					{
 						name: 'QR Code',
 						value: 'qrCode',
 						description: 'Create and manage QR codes',
 					},
 					{
-						name: 'User',
-						value: 'user',
-						description: 'Block/unblock users',
-					},
-					{
 						name: 'System',
 						value: 'system',
 						description: 'System-level operations',
+					},
+					{
+						name: 'Template',
+						value: 'template',
+						description: 'Send and manage message templates',
+					},
+					{
+						name: 'User',
+						value: 'user',
+						description: 'Block/unblock users',
 					},
 				],
 				default: 'message',
@@ -3266,27 +3273,6 @@ export class Bcdrllc implements INodeType {
 							'bcdrllcApi',
 							requestOptions,
 						);
-					} else if (operation === 'sendRawRequest') {
-						const method = this.getNodeParameter('rawMethod', i) as string;
-						const endpoint = this.getNodeParameter('rawEndpoint', i) as string;
-						const bodyJson = this.getNodeParameter('rawBody', i, '{}') as string;
-						const requestBody = JSON.parse(bodyJson);
-
-						const requestOptions: any = {
-							method,
-							url: `${baseUrl}${endpoint}`,
-							json: true,
-						};
-
-						if (Object.keys(requestBody).length > 0 && method !== 'GET') {
-							requestOptions.body = requestBody;
-						}
-
-						responseData = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'bcdrllcApi',
-							requestOptions,
-						);
 					} else if (operation === 'markAsRead') {
 						const messageId = this.getNodeParameter('messageId', i) as string;
 
@@ -4591,6 +4577,14 @@ export class Bcdrllc implements INodeType {
 								json: true,
 							},
 						);
+					}
+				}
+
+				// ========================================
+				// QR CODE RESOURCE
+				// ========================================
+				else if (resource === 'qrCode') {
+					if (operation === 'createQrCode') {
 						const prefilledMessage = this.getNodeParameter('prefilledMessage', i) as string;
 						const imageFormat = this.getNodeParameter('imageFormat', i) as string;
 
@@ -4765,7 +4759,7 @@ export class Bcdrllc implements INodeType {
 					});
 					continue;
 				}
-				throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+				throw new NodeApiError(this.getNode(), error as JsonObject, { itemIndex: i });
 			}
 		}
 

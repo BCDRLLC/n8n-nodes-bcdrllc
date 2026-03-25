@@ -2,12 +2,14 @@ import {
 	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
+	Icon,
 	INodeProperties,
 } from 'n8n-workflow';
 
 export class BcdrllcApi implements ICredentialType {
 	name = 'bcdrllcApi';
 	displayName = 'BCDR Cloud API';
+	icon: Icon = 'file:bcdrllcApi.svg';
 	documentationUrl = 'https://bcdr.sa/docs/api';
 	properties: INodeProperties[] = [
 		{

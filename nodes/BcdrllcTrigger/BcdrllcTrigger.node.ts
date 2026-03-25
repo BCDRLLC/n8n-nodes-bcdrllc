@@ -159,7 +159,8 @@ export class BcdrllcTrigger implements INodeType {
 					};
 				}
 			} catch (error) {
-				// If filtering fails, continue processing
+				const errorMessage = error instanceof Error ? error.message : String(error);
+				throw new NodeOperationError(this.getNode(), `Failed to filter webhook update: ${errorMessage}`);
 			}
 		}
 
