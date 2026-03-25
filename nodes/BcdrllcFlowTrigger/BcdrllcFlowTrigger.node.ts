@@ -6,6 +6,7 @@ import {
 	INodeTypeDescription,
 	ICredentialDataDecryptedObject,
 	IDataObject,
+	NodeConnectionTypes,
 	NodeOperationError,
 } from 'n8n-workflow';
 
@@ -23,7 +24,7 @@ export class BcdrllcFlowTrigger implements INodeType {
 			name: 'BCDR Flow',
 		},
 		inputs: [],
-		outputs: ['main'],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'bcdrllcApi',
@@ -182,10 +183,8 @@ export class BcdrllcFlowTrigger implements INodeType {
 			aesKey = decrypted.aesKey;
 			iv = decrypted.iv;
 		} catch (error) {
-			return {
-				webhookResponse: 'Decryption failed',
-				workflowData: [],
-			};
+			const errorMessage = error instanceof Error ? error.message : String(error);
+			throw new NodeOperationError(this.getNode(), `Failed to decrypt flow payload: ${errorMessage}`);
 		}
 
 		// Check for errors in the request

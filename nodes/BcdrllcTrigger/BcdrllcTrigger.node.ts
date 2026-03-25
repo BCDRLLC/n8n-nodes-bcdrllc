@@ -6,6 +6,7 @@ import {
 	INodeTypeDescription,
 	ICredentialDataDecryptedObject,
 	IDataObject,
+	NodeConnectionTypes,
 	NodeOperationError,
 } from 'n8n-workflow';
 
@@ -23,7 +24,7 @@ export class BcdrllcTrigger implements INodeType {
 			name: 'BCDR Webhook',
 		},
 		inputs: [],
-		outputs: ['main'],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'bcdrllcApi',

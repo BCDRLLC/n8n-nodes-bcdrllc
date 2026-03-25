@@ -4,6 +4,7 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
+	NodeConnectionTypes,
 	NodeApiError,
 	NodeOperationError,
 } from 'n8n-workflow';
@@ -20,8 +21,8 @@ export class Bcdrllc implements INodeType {
 		defaults: {
 			name: 'BCDR Cloud API',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'bcdrllcApi',
@@ -2218,54 +2219,6 @@ export class Bcdrllc implements INodeType {
 				description: 'Request body as JSON',
 			},
 			{
-				displayName: 'HTTP Method',
-				name: 'rawMethod',
-				type: 'options',
-				options: [
-					{ name: 'GET', value: 'GET' },
-					{ name: 'POST', value: 'POST' },
-					{ name: 'DELETE', value: 'DELETE' },
-					{ name: 'PATCH', value: 'PATCH' },
-					{ name: 'PUT', value: 'PUT' },
-				],
-				displayOptions: {
-					show: {
-						resource: ['message'],
-						operation: ['sendRawRequest'],
-					},
-				},
-				default: 'POST',
-				required: true,
-				description: 'HTTP method for the request',
-			},
-			{
-				displayName: 'Endpoint',
-				name: 'rawEndpoint',
-				type: 'string',
-				displayOptions: {
-					show: {
-						resource: ['message'],
-						operation: ['sendRawRequest'],
-					},
-				},
-				default: '',
-				required: true,
-				description: 'API endpoint (e.g., /{phone_id}/messages)',
-			},
-			{
-				displayName: 'Request Body (JSON)',
-				name: 'rawBody',
-				type: 'json',
-				displayOptions: {
-					show: {
-						resource: ['message'],
-						operation: ['sendRawRequest'],
-					},
-				},
-				default: '{}',
-				description: 'Request body as JSON',
-			},
-			{
 				displayName: 'Websites',
 				name: 'websites',
 				type: 'string',
@@ -2704,18 +2657,6 @@ export class Bcdrllc implements INodeType {
 			},
 
 			{
-				displayName: 'Template Config (JSON)',
-				name: 'templateConfig',
-				type: 'json',
-				displayOptions: {
-					show: {
-						resource: ['flow'],
-						operation: ['generateFlowTemplate'],
-					},
-				},
-				default: '{"screens":[{"id":"WELCOME","title":"Welcome","data":{},"layout":{"type":"SingleColumnLayout","children":[{"type":"Form","name":"form","children":[{"type":"TextHeading","text":"Welcome"},{"type":"TextInput","name":"user_name","label":"Name","required":true},{"type":"Footer","label":"Continue","on-click-action":{"name":"data_exchange","payload":{"user_name":"${form.user_name}"}}}]}]}}]}',
-				description: 'Flow template with screens and data-exchange actions',
-			}, {
 				displayName: 'Template Configuration (JSON)',
 				name: 'templateConfig',
 				type: 'json',
