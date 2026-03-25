@@ -19,6 +19,7 @@ export class BcdrllcFlowTrigger implements INodeType {
 		icon: 'file:bcdrllcFlowTrigger.svg',
 		group: ['trigger'],
 		version: 1,
+		subtitle: 'WhatsApp Cloud API',
 		description: 'Handle WhatsApp Flow data exchange requests with encryption',
 		defaults: {
 			name: 'BCDR Flow',
@@ -246,19 +247,50 @@ export class BcdrllcFlowTrigger implements INodeType {
 			};
 		}
 
-		// Workflow mode - store aesKey and iv for response generation
+		// Workflow mode - generate response inside the trigger so key material never leaves this node
+		const responseOptions = this.getNodeParameter('responseOptions', {}) as IDataObject;
+		const closeFlow = responseOptions.closeFlow as boolean;
+		const screen = (responseOptions.screen as string) || (decryptedData.screen as string) || 'SUCCESS';
+
+		let responseData: IDataObject = {};
+		const rawResponseData = responseOptions.data;
+		if (typeof rawResponseData === 'string' && rawResponseData.trim() !== '') {
+			try {
+				responseData = JSON.parse(rawResponseData) as IDataObject;
+			} catch (error) {
+				const errorMessage = error instanceof Error ? error.message : String(error);
+				throw new NodeOperationError(this.getNode(), `Invalid Response Options data JSON: ${errorMessage}`);
+			}
+		} else if (rawResponseData && typeof rawResponseData === 'object') {
+			responseData = rawResponseData as IDataObject;
+		}
+
+		if (closeFlow && decryptedData.flow_token) {
+			responseData.flow_token = decryptedData.flow_token;
+		}
+
+		const response: IDataObject = {
+			version: decryptedData.version,
+			screen,
+			data: responseData,
+		};
+
+		const errorMessage = responseOptions.errorMessage as string;
+		if (errorMessage) {
+			response.error_message = errorMessage;
+		}
+
+		const encryptedResponse = encryptFlowResponse(response, aesKey, iv);
+
 		return {
-			webhookResponse: {}, // Will be replaced by workflow output
+			webhookResponse: encryptedResponse,
 			workflowData: [
 				[
 					{
 						json: {
 							...decryptedData,
 							encrypted_payload: payload,
-							_encryption: {
-								aesKey: aesKey.toString('base64'),
-								iv: iv.toString('base64'),
-							},
+							response_generated: 'workflow',
 						},
 					},
 				],

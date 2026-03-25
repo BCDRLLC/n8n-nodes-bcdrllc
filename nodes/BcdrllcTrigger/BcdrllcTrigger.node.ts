@@ -19,6 +19,7 @@ export class BcdrllcTrigger implements INodeType {
 		icon: 'file:bcdrllcTrigger.svg',
 		group: ['trigger'],
 		version: 1,
+		subtitle: 'WhatsApp Cloud API',
 		description: 'Receive WhatsApp webhook updates (messages, statuses, etc.)',
 		defaults: {
 			name: 'BCDR Webhook',
